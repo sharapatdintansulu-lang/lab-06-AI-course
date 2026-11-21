@@ -1,0 +1,52 @@
+{
+  "harness_controls": [
+    "validate_input",
+    "blind",
+    "refuse",
+    "log",
+    "escalate"
+  ],
+  "format_problems": [],
+  "entries": [
+    {
+      "control": "validate_input",
+      "principle": "Robustness, security and safety (the system must not act on inputs it cannot reliably interpret)",
+      "principle_source": "OECD Recommendation of the Council on Artificial Intelligence, OECD/LEGAL/0449 (adopted 22 May 2019, revised 3 May 2024), Section 1, principle 1.4; a non-binding recommendation",
+      "instrument": "Law of the Republic of Kazakhstan No. 230-VIII of 17 November 2025 'On Artificial Intelligence'. It would bind a real fund operating in Kazakhstan; it does not bind this fictional prototype.",
+      "provision": "Art. 11(1) (AI systems are built and operated to meet safety and reliability requirements that exclude unforeseen consequences); Art. 15(2)(2) (owners and operators take measures for safety and reliability)",
+      "why_here": "In Part 4 the bare pipeline scored a profile with GPA 9.9 and exam score -5 and returned 'reject' as if it were a merit judgement; validate_input refuses it with reason invalid_input and zero model calls."
+    },
+    {
+      "control": "blind",
+      "principle": "Fairness and non-discrimination (respect for human rights, including fairness and privacy)",
+      "principle_source": "OECD/LEGAL/0449 (2019, revised 2024), Section 1, principle 1.2; non-binding",
+      "instrument": "Law of the Republic of Kazakhstan No. 230-VIII of 17 November 2025 'On Artificial Intelligence'; for data minimisation also Law No. 94-V of 21 May 2013 'On Personal Data and Their Protection'. Both would bind a real fund in Kazakhstan, not this fictional prototype.",
+      "provision": "Law 230-VIII Art. 6 (AI systems are built and operated so as to exclude discrimination on grounds that include sex and language); Law 94-V Art. 7(9) (personal data excessive in content and volume for the purpose are not processed)",
+      "why_here": "In Part 1 no attribute stood clear of its floor on flips, but all 4 gender flips went against male-coded names (0 vs 4, McNemar p = 0.125) and flagship universities scored +2.5 points higher (95% CI +1.1 to +4.1, sign test p = 0.002); name and university are not merit fields, so the model does not need to see them. The cost was 30 of 400 decisions changed and a mean score change of 14.01, and the 'after' flips of 0 are zero by construction."
+    },
+    {
+      "control": "refuse",
+      "principle": "Respect for individual autonomy, privacy and purpose limitation (consent)",
+      "principle_source": "OECD/LEGAL/0449 (2019, revised 2024), Section 1, principle 1.2; non-binding",
+      "instrument": "Law of the Republic of Kazakhstan No. 94-V of 21 May 2013 'On Personal Data and Their Protection'. It would bind a real fund in Kazakhstan, not this fictional prototype.",
+      "provision": "Art. 19-1(1) (automated processing that creates, changes or ends a person's rights is prohibited unless the subject consented or a law provides otherwise); Art. 7(1) (processing with the consent of the subject or his legal representative); Art. 14 (use of personal data only for the purposes declared at collection)",
+      "why_here": "In Part 4 the bare pipeline screened all 6 requests, including a purpose of ranking applicants by ethnicity, a 17-year-old and a missing consent; the harness refused 5 of 6 with zero model calls. The harness has no channel for a legal representative, so it refuses under-18 applicants instead of deciding."
+    },
+    {
+      "control": "log",
+      "principle": "Accountability",
+      "principle_source": "OECD/LEGAL/0449 (2019, revised 2024), Section 1, principle 1.5; non-binding",
+      "instrument": "Law of the Republic of Kazakhstan No. 230-VIII of 17 November 2025 'On Artificial Intelligence' (would bind a real fund in Kazakhstan). Benchmark only: Regulation (EU) 2024/1689, which applies if the system falls under Annex III point 3(a) (access or admission to educational institutions); whether a scholarship screen falls under it is arguable.",
+      "provision": "Law 230-VIII Art. 8(1)-(2) (continuous control of the AI system and responsibility for its results through its life cycle); Art. 15(2)(3) (owners keep documentation proportionate to the system's effect on rights); benchmark: Regulation (EU) 2024/1689 Art. 12 (automatic recording of events)",
+      "why_here": "Each call writes one record with field names (not values), the SHA-256 of the text the model saw, model_id, prompt version, harness settings, the raw reply, reason code and escalated_to_human, so the 8 escalations of Part 3 and the 5 refusals of Part 4 can be reconstructed later without re-running the model."
+    },
+    {
+      "control": "escalate",
+      "principle": "Human agency and oversight",
+      "principle_source": "OECD/LEGAL/0449 (2019, revised 2024), Section 1, principle 1.2 (safeguards such as capacity for human agency and oversight); non-binding",
+      "instrument": "Law of the Republic of Kazakhstan No. 230-VIII of 17 November 2025 'On Artificial Intelligence' and Law No. 94-V of 21 May 2013 (both would bind a real fund in Kazakhstan, not this prototype). Benchmark only: Regulation (EU) 2024/1689 Art. 14 (human oversight of high-risk systems).",
+      "provision": "Law 230-VIII Art. 17(2) (autonomy levels: low autonomy leaves the final choice to a human, medium autonomy keeps a human's ability to correct or cancel the decision); Art. 9 (preserving human autonomy and free will in decisions); Law 94-V Art. 19-1(2)-(3) (explain the automated processing, allow an objection, answer it within three working days)",
+      "why_here": "The band (45, 55) would have sent 80 of 400 baseline profiles (20.0%) to a person, but the harness sent 8 of 400 (2.0%) because blinding moved the scores by 14.01 on average; escalation decides who a person looks at, it does not make an automated decision fair."
+    }
+  ]
+}
